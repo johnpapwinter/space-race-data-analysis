@@ -1,0 +1,6 @@
+scrapy
+pandas
+plotly
+iso3166
+seaborn
+jupyter
