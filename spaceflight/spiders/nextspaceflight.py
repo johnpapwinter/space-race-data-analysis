@@ -16,7 +16,6 @@ class NextspaceflightSpider(scrapy.Spider):
             target_url = target_url.replace('location.href = ', '').replace("'", "").strip()
             target_url = base_url + target_url
 
-            # yield print(f"This is the URL: {target_url}")
             yield response.follow(target_url, callback=self.parse_launch)
 
     def parse_launch(self, response):
