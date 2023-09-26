@@ -1,5 +1,5 @@
 import scrapy
-from spaceflight.spaceflight.items import SpaceflightItem
+from spaceflight.items import SpaceflightItem
 
 
 class NextspaceflightSpider(scrapy.Spider):
@@ -9,9 +9,15 @@ class NextspaceflightSpider(scrapy.Spider):
 
     def parse(self, response):
         launches = response.css('div.mdl-grid div.mdl-cell.mdl-cell--6-col')
+        base_url = 'https://nextspaceflight.com'
 
         for launch in launches:
-            yield response.follow('url', callback=self.parse_launch)
+            target_url = launch.css('div.launch div.mdl-card__actions div button.mdc-button::attr(onclick)').get()
+            target_url = target_url.replace('location.href = ', '').replace("'", "").strip()
+            target_url = base_url + target_url
+
+            # yield print(f"This is the URL: {target_url}")
+            yield response.follow(target_url, callback=self.parse_launch)
 
     def parse_launch(self, response):
         launch_item = SpaceflightItem()
