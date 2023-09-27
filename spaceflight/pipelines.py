@@ -11,9 +11,15 @@ class SpaceflightPipeline:
                 adapter[field_name] = value.replace('\n', '').strip()
             if field_name == 'rocket_status':
                 value = adapter.get(field_name)
-                adapter[field_name] = value.replace('Status:', '').strip()
+                if 'Status:' in value:
+                    adapter[field_name] = value.replace('Status:', '').strip()
+                else:
+                    adapter[field_name] = None
             if field_name == 'price':
                 value = adapter.get(field_name)
-                adapter[field_name] = value.replace('Price:', '').strip()
+                if 'Price:' in value:
+                    adapter[field_name] = value.replace('Price:', '').strip()
+                else:
+                    adapter[field_name] = None
 
         return item
