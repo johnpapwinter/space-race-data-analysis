@@ -18,6 +18,12 @@ class NextspaceflightSpider(scrapy.Spider):
 
             yield response.follow(target_url, callback=self.parse_launch)
 
+        next_page = response.css('div.mdl-tabs__panel.is-active span.step-links div button::attr(onclick)').get()
+        if next_page is not None:
+            next_page_url = next_page.replace('location.href = ', '').replace("'", "").strip()
+            next_page_url = base_url + '/launches/past/' + next_page_url
+            yield response.follow(next_page_url, callback=self.parse)
+
     def parse_launch(self, response):
         launch_item = SpaceflightItem()
         launch_item['mission_name'] = response.css('section div.mdl-cell div.mdl-card__supporting-text h4::text').get()
