@@ -28,7 +28,8 @@ class NextspaceflightSpider(scrapy.Spider):
         launch_item = SpaceflightItem()
         launch_item['mission_name'] = response.css('section div.mdl-cell div.mdl-card__supporting-text h4::text').get()
         launch_item['location'] = (
-            response.css('section.card div.mdl-card__supporting-text h4.mdl-card__title-text::text')[2].get())
+            response.xpath('//h3[text()="Location"]').xpath('following-sibling::section')[0].xpath('.//h4/text()').get())
+            # response.css('section.card div.mdl-card__supporting-text h4.mdl-card__title-text::text')[2].get())
         launch_item['date'] = (
             response.css('section div.mdl-cell div.mdl-card__supporting-text div.mdl-grid.a div.mdl-cell span::text').get())
         launch_item['rocket_name'] = (
